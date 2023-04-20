@@ -28,8 +28,12 @@ http
           case "customer.updated":
             message = "A customer account has been updated!";
             break;
+          case "invoice.created":
+            message = "A new invoice has been created!";
+            break;
           default:
             message = "An unknown event has occurred!";
+            break;
         }
 
         if (message) {
