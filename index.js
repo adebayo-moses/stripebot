@@ -1,7 +1,14 @@
 const http = require("http");
 const https = require("https");
 
-const webhookUrl = "http://"; //URL of Microsoft Teams webhook
+const webhookUrl = "ah not so fast bro!"; //URL of Microsoft Teams webhook
+
+const handleError = (error) => {
+  console.error(error);
+  // Display a message to the user
+  const message = `Error sending notification message to Microsoft Teams: ${error.message}`;
+  alert(message);
+};
 
 http
   .createServer((req, res) => {
@@ -60,19 +67,17 @@ http
             },
           };
 
-          const req = https.request(webhookUrl, options, (res) => {
+          const req2 = https.request(webhookUrl, options, (res) => {
             console.log(`statusCode: ${res.statusCode}`);
             res.on("data", (d) => {
               process.stdout.write(d);
             });
           });
 
-          req.on("error", (error) => {
-            console.error(error);
-          });
+          req2.on("error", handleError);
 
-          req.write(JSON.stringify(messagePayload));
-          req.end();
+          req2.write(JSON.stringify(messagePayload));
+          req2.end();
         }
       });
       res.statusCode = 200;
@@ -80,3 +85,26 @@ http
     }
   })
   .listen(8080); // Replace with the appropriate port number which is not already occupied
+
+console.log("Server listening on port 8080...");
+
+// mock payload data
+// curl -X POST -H "Content-Type: application/json" -d '{
+//     "type": "charge.succeeded",
+//     "data": {
+//       "id": "ch_1234567890abcdefg",
+//       "amount": 100,
+//       "currency": "USD"
+//     }
+//   }' http://localhost:8080/webhooks/stripe
+
+try {
+  httpsReq.write(JSON.stringify(messagePayload));
+  httpsReq.end();
+  console.log("Notification message successfully sent to Microsoft Teams!");
+} catch (error) {
+  console.error(
+    "Error sending notification message to Microsoft Teams:",
+    error
+  );
+}

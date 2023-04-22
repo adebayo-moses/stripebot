@@ -69,9 +69,18 @@ http
             });
           });
 
-          httpsReq.on("error", (error: Error) => {
-            console.error(error);
-          });
+          try {
+            httpsReq.write(JSON.stringify(messagePayload));
+            httpsReq.end();
+            console.log(
+              "Notification message successfully sent to Microsoft Teams!"
+            );
+          } catch (error) {
+            console.error(
+              "Error sending notification message to Microsoft Teams:",
+              error
+            );
+          }
 
           httpsReq.write(JSON.stringify(messagePayload));
           httpsReq.end();
